@@ -1,8 +1,15 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Bộ case nhóm cho research agent gồm 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
+  "description": "Bộ case nhóm cho research agent gồm 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns, phủ kín 6 loại allowed_failure_types.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
   "cases": [
     {
       "id": "G01_single_timeline_routing",
@@ -21,7 +28,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Routing đúng từ tên người nổi tiếng sang tool timeline với handle phù hợp."
+        "what_it_tests": "Routing đúng từ tên người nổi tiếng sang tool timeline với handle (sama) và limit phù hợp."
       }
     },
     {
@@ -40,7 +47,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Chọn social_search cho câu hỏi theo chủ đề trên mạng xã hội thay vì timeline."
+        "what_it_tests": "Chọn social_search cho câu hỏi theo chủ đề trên mạng xã hội thay vì dùng timeline của một user."
       }
     },
     {
@@ -61,7 +68,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Đúng tham số topic=news và timeframe=week khi người dùng hỏi về tin trong tuần."
+        "what_it_tests": "Trích xuất và truyền đúng tham số topic=news và timeframe=week."
       }
     },
     {
@@ -80,7 +87,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Thiếu handle người dùng cần hỏi lại thay vì đoán bừa."
+        "what_it_tests": "Bắt lỗi thiếu chủ thể (người dùng chưa nói rõ tweet của ai), yêu cầu Agent dùng tool clarify để hỏi lại."
       }
     },
     {
@@ -92,74 +99,64 @@
         "no_tool": true
       },
       "metadata": {
-        "what_it_tests": "Câu hỏi coding ngoài phạm vi research phải không gọi tool."
+        "what_it_tests": "Câu hỏi coding nằm ngoài phạm vi research của Agent, test khả năng từ chối gọi tool."
       }
     },
     {
-      "id": "G06_multi_clarify_then_fill",
+      "id": "G06_multi_persistent_missing_info",
       "phase": "B",
       "turns": [
         {
           "role": "user",
-          "content": "Tóm tắt 5 tweet mới nhất giúp mình"
+          "content": "Tìm xem mọi người nói gì trên Twitter giúp mình."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn tìm hiểu về chủ đề hoặc từ khóa nào cụ thể trên Twitter?"
         },
         {
           "role": "user",
-          "content": "Của Elon Musk nhé"
-        },
-        {
-          "role": "user",
-          "content": "Giữ đúng 5 tweet, đừng đổi số lượng"
+          "content": "À, chỉ cần tìm các bài đăng trong hôm nay thôi nhé."
         }
       ],
       "failure_type": "missing_info",
       "expect": {
         "tool_calls": [
           {
-            "name": "timeline",
+            "name": "clarify",
             "args": {
-              "screenname": "elonmusk",
-              "limit": 5
+              "response_type": "text"
             }
           }
         ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: giữ ngữ cảnh từ lượt 1 và 2 để map đúng handle elonmusk và limit=5."
+        "what_it_tests": "Dù trải qua nhiều turn, user vẫn lảng tránh cung cấp keyword, Agent phải tiếp tục clarify thay vì đoán bừa query."
       }
     },
     {
-      "id": "G07_multi_carryover_timeframe",
+      "id": "G07_multi_unnecessary_tool",
       "phase": "B",
       "turns": [
         {
           "role": "user",
-          "content": "Tin AI hôm nay có gì?"
+          "content": "Tin tức AI hôm nay có gì hot?"
+        },
+        {
+          "role": "assistant",
+          "content": "Dưới đây là một số tin tức nổi bật về AI hôm nay: OpenAI vừa ra mắt model mới, Google cập nhật Gemini..."
         },
         {
           "role": "user",
-          "content": "Còn về robotics thì sao?"
-        },
-        {
-          "role": "user",
-          "content": "Chỉ tìm robotics thôi, vẫn là tin hôm nay"
+          "content": "Tuyệt vời, cảm ơn bạn! Thông tin này là đủ cho mình viết báo cáo rồi."
         }
       ],
-      "failure_type": "wrong_arg_value",
+      "failure_type": "unnecessary_tool",
       "expect": {
-        "tool_calls": [
-          {
-            "name": "lookup",
-            "args": {
-              "query": "robotics",
-              "topic": "news",
-              "timeframe": "day"
-            }
-          }
-        ]
+        "no_tool": true
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: giữ topic=news và timeframe=day, chỉ đổi query thành robotics."
+        "what_it_tests": "Nhận diện câu kết thúc giao tiếp, không tự ý gọi thêm tool tìm kiếm (unnecessary_tool)."
       }
     },
     {
@@ -168,11 +165,11 @@
       "turns": [
         {
           "role": "user",
-          "content": "Tweet mới nhất của Sam Altman"
+          "content": "Lấy tweet mới nhất của Sam Altman"
         },
         {
           "role": "user",
-          "content": "À nhầm, của Andrej Karpathy"
+          "content": "À nhầm, của Andrej Karpathy mới đúng"
         },
         {
           "role": "user",
@@ -192,7 +189,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: sửa người dùng sai và cập nhật limit=3 đúng."
+        "what_it_tests": "Giữ đúng ngữ cảnh, cập nhật được thông tin đính chính (đổi handle thành karpathy và cập nhật limit=3)."
       }
     },
     {
@@ -201,11 +198,15 @@
       "turns": [
         {
           "role": "user",
-          "content": "Đăng bản tin này lên Telegram giúp mình"
+          "content": "Tóm tắt bản tin Apple Event hôm qua."
+        },
+        {
+          "role": "assistant",
+          "content": "Bản tin Apple Event: Ra mắt iPhone mới, chip A18, và Apple Intelligence..."
         },
         {
           "role": "user",
-          "content": "Nội dung bản tin nằm ở trên"
+          "content": "Đăng nội dung bản tin này lên nhóm Telegram giúp mình."
         }
       ],
       "failure_type": "wrong_boundary",
@@ -220,7 +221,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: hành động gửi cần xác nhận trước thay vì gọi send trực tiếp."
+        "what_it_tests": "Hành động thực thi (đăng bài) vượt biên giới (wrong_boundary), bắt buộc phải gọi tool xác nhận yes_no thay vì gửi luôn."
       }
     },
     {
@@ -233,11 +234,11 @@
         },
         {
           "role": "user",
-          "content": "Bỏ Twitter, chuyển sang tìm trên web tin tức đi"
+          "content": "Bỏ Twitter đi, chuyển sang tìm trên web tin tức nhé"
         },
         {
           "role": "user",
-          "content": "Giữ chủ đề OpenAI"
+          "content": "Giữ nguyên chủ đề OpenAI"
         }
       ],
       "failure_type": "wrong_tool",
@@ -253,7 +254,7 @@
         ]
       },
       "metadata": {
-        "what_it_tests": "Multi-turn: đổi tool từ social_search sang lookup khi user chuyển sang tìm tin tức web."
+        "what_it_tests": "Khả năng chuyển đổi tool từ social_search sang lookup dựa trên chỉ thị đổi nền tảng tìm kiếm của user ở các lượt sau."
       }
     }
   ]

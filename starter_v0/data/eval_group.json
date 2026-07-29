@@ -1,7 +1,258 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "description": "Bộ case nhóm cho research agent gồm 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_single_timeline_routing",
+      "phase": "B",
+      "query": "Tweet mới nhất của Sam Altman là gì?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Routing đúng từ tên người nổi tiếng sang tool timeline với handle phù hợp."
+      }
+    },
+    {
+      "id": "G02_single_social_search_routing",
+      "phase": "B",
+      "query": "Mọi người đang bàn gì về GPT-5 trên Twitter?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "GPT-5"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Chọn social_search cho câu hỏi theo chủ đề trên mạng xã hội thay vì timeline."
+      }
+    },
+    {
+      "id": "G03_single_lookup_timeframe",
+      "phase": "B",
+      "query": "Tin công nghệ trong tuần này",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Đúng tham số topic=news và timeframe=week khi người dùng hỏi về tin trong tuần."
+      }
+    },
+    {
+      "id": "G04_single_clarify_missing_handle",
+      "phase": "B",
+      "query": "Tóm tắt 5 tweet mới nhất giúp mình",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Thiếu handle người dùng cần hỏi lại thay vì đoán bừa."
+      }
+    },
+    {
+      "id": "G05_single_out_of_scope",
+      "phase": "B",
+      "query": "Viết giúp mình một hàm Python tính Fibonacci bằng recursion.",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Câu hỏi coding ngoài phạm vi research phải không gọi tool."
+      }
+    },
+    {
+      "id": "G06_multi_clarify_then_fill",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tóm tắt 5 tweet mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Của Elon Musk nhé"
+        },
+        {
+          "role": "user",
+          "content": "Giữ đúng 5 tweet, đừng đổi số lượng"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: giữ ngữ cảnh từ lượt 1 và 2 để map đúng handle elonmusk và limit=5."
+      }
+    },
+    {
+      "id": "G07_multi_carryover_timeframe",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Còn về robotics thì sao?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm robotics thôi, vẫn là tin hôm nay"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: giữ topic=news và timeframe=day, chỉ đổi query thành robotics."
+      }
+    },
+    {
+      "id": "G08_multi_correction_handle_and_limit",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tweet mới nhất của Sam Altman"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, của Andrej Karpathy"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 3 tweet mới nhất nhé"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: sửa người dùng sai và cập nhật limit=3 đúng."
+      }
+    },
+    {
+      "id": "G09_multi_confirm_before_send",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin này lên Telegram giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Đúng rồi, gửi luôn đi"
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: hành động gửi cần xác nhận trước thay vì gọi send trực tiếp."
+      }
+    },
+    {
+      "id": "G10_multi_switch_tool_to_web",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Mọi người nói gì về OpenAI trên Twitter?"
+        },
+        {
+          "role": "user",
+          "content": "Bỏ Twitter, chuyển sang tìm trên web tin tức đi"
+        },
+        {
+          "role": "user",
+          "content": "Giữ chủ đề OpenAI"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "OpenAI",
+              "topic": "news"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn: đổi tool từ social_search sang lookup khi user chuyển sang tìm tin tức web."
+      }
+    }
+  ]
 }

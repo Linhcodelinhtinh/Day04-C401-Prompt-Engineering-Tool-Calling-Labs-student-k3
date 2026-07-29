@@ -130,11 +130,11 @@ tools:
 
   # ---------------- Team tool ----------------
   - name: meme_search
-    description: "Tìm một GIF/meme theo từ khóa để đính kèm cho vui. CHỈ dùng khi người dùng chủ động yêu cầu meme/GIF/hài hước; không tự ý gắn vào digest nghiêm túc."
+    description: "Tìm một GIF/meme theo từ khóa. Dùng khi user chủ động yêu cầu meme/GIF/hài hước, HOẶC khi kết quả từ tool khác (lookup/social_search/timeline/fetch) nhắc tới một meme/khoảnh khắc viral có thật (không phải chỉ nhắc tên người nổi tiếng suông) — khi đó chủ động gọi theo để minh hoạ. Ưu tiên từ khóa gắn với meme nổi tiếng, dễ nhận ra (vd: Ronaldo Siuu, Donald Trump, Elon Musk, Drake, distracted boyfriend) thay vì mô tả chung chung."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa mô tả meme cần tìm"}
+        query: {type: string, default: "", description: "Từ khóa mô tả meme cần tìm; ưu tiên tên meme/nhân vật nổi tiếng cụ thể"}
         limit: {type: integer, default: 3, description: "Số lượng kết quả"}
         rating: {type: string, enum: [g, pg, "pg-13"], default: "g", description: "Ngưỡng nội dung, mặc định an toàn lớp học"}
       required: [query]

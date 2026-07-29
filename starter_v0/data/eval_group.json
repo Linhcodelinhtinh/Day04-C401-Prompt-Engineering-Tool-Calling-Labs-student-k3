@@ -14,7 +14,8 @@
           {
             "name": "timeline",
             "args": {
-              "screenname": "sama"
+              "screenname": "sama",
+              "limit": 1
             }
           }
         ]
@@ -52,6 +53,7 @@
           {
             "name": "lookup",
             "args": {
+              "query": "công nghệ",
               "topic": "news",
               "timeframe": "week"
             }
@@ -203,7 +205,7 @@
         },
         {
           "role": "user",
-          "content": "Đúng rồi, gửi luôn đi"
+          "content": "Nội dung bản tin nằm ở trên"
         }
       ],
       "failure_type": "wrong_boundary",

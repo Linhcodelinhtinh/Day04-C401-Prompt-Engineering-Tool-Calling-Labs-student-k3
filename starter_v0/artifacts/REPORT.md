@@ -11,9 +11,9 @@
 
 ## A1. Agent làm được gì?
 
-Research Agent có thể tìm bài đăng gần đây của một tài khoản cụ thể, tìm kiếm bài đăng mạng xã hội hoặc thông tin web/tin tức, đọc nội dung từ URL do người dùng cung cấp và tổng hợp kết quả thành Markdown digest. Agent cũng hỏi lại khi thiếu thông tin thiết yếu và bắt buộc xác nhận rõ ràng trước khi gửi nội dung lên Telegram.
+Research Agent có thể tìm bài đăng gần đây của một tài khoản cụ thể, tìm kiếm bài đăng mạng xã hội hoặc thông tin web/tin tức, đọc nội dung từ URL do người dùng cung cấp và tổng hợp kết quả thành Markdown digest. Khi người dùng chủ động yêu cầu nội dung vui nhộn, agent có thể tìm GIF/meme phù hợp. Agent cũng hỏi lại khi thiếu thông tin thiết yếu và bắt buộc xác nhận rõ ràng trước khi gửi nội dung lên Telegram.
 
-**URL demo:** _Streamlit chạy local: `http://localhost:8501`
+**URL demo:** _Streamlit chạy local: `http://localhost:8501`_
 
 ## A2. Các tool hiện có
 
@@ -29,6 +29,7 @@ Research Agent có thể tìm bài đăng gần đây của một tài khoản c
 | `policy` | Tìm trong tài liệu policy nội bộ | Không |
 | `papers` | Tìm paper trên arXiv | Không |
 | `paper_text` | Trích xuất text từ paper arXiv | Không |
+| `meme_search` | Tìm GIF/meme trên Giphy theo từ khóa khi người dùng yêu cầu | Có |
 
 ## A3. Câu hỏi mẫu để thử agent
 
@@ -36,7 +37,7 @@ Research Agent có thể tìm bài đăng gần đây của một tài khoản c
 2. “Tìm tin AI hôm nay và mọi người đang bàn gì trên X.”
 3. “Tóm tắt bài này: https://example.com/article”
 4. “Tìm các paper mới về agentic RAG.”
-5. “Gửi bản tin này lên Telegram.”
+5. “Tìm một GIF/meme vui về deadline để mình đăng trong nhóm.”
 
 ## A4. Kịch bản demo đã chuẩn bị
 
@@ -46,6 +47,7 @@ Research Agent có thể tìm bài đăng gần đây của một tài khoản c
 | Tin AI và thảo luận trên mạng xã hội | `lookup(topic=news)` + `social_search` trong cùng turn | v1 cho phép gọi nhiều source tool khi yêu cầu thực sự cần cả hai nguồn. | Base run v0/v1 |
 | Người dùng đã cho URL | Chỉ `fetch(url=...)` | v1 nêu rõ không gọi `lookup` khi đã có URL cụ thể. | Base run v0/v1 |
 | Yêu cầu gửi Telegram | `clarify(response_type=yes_no)` trước `send` | Ranh giới xác nhận được quy định trong prompt và tool declaration. | Base run v0/v1 |
+| Người dùng yêu cầu meme/GIF | `meme_search(query=..., rating=g)` | Tool mới chỉ được gọi khi user yêu cầu rõ meme/GIF/nội dung hài hước; không làm nhiễu research digest nghiêm túc. | `tools/meme_search/TOOL.md` |
 
 ---
 
@@ -103,12 +105,13 @@ Lưu ý review thủ công: một số tool call routing đúng vẫn lỗi khi 
 |---|---|---|---|
 | Core tool | `artifacts/tools.yaml`; run JSON v0–v4 | Tool routing trong base eval đạt 100% ở v3 (v4 mới nhất giảm còn 95%). | API ngoài cần key hợp lệ; phải review thủ công tool-result lỗi. |
 | Built-in tùy chọn | `artifacts/tools.yaml`; transcript `...161928643105` | `papers` và `format` đã trả về digest arXiv gồm năm item. | `send` cần xác nhận rõ ràng; tool gọi API có thể lỗi do thiếu credential hoặc HTTP 403. |
-| Tool do nhóm tự thêm | Chưa có | Chưa có bằng chứng về tool mới do nhóm tự viết. | Cần có `TOOL.md`, implementation, registry, declaration và smoke test. |
+| Tool do nhóm tự thêm | `tools/meme_search/TOOL.md`, `tools/meme_search/tool.py`, `tools/__init__.py`, `artifacts/tools.yaml` | Đã có tool `meme_search` dùng Giphy, được đăng ký và khai báo schema `query`, `limit`, `rating`. Tool chỉ được dùng khi user yêu cầu meme/GIF/hài hước. | Cần `GIPHY_API_KEY`; mặc định `rating=g` để phù hợp môi trường lớp học. Chưa có run/transcript thực thi API nên không tuyên bố kết quả live. |
 
 ## B6. Reflection / việc cần làm tiếp
 
 - Các cải thiện prompt đã nâng tool routing accuracy từ 75.0% (v0) lên 100.0% (v3), và case accuracy từ 70.0% lên 85.0%.
 - Run v4 mới nhất bị regression xuống 80.0% case accuracy và 95.0% routing accuracy, nên v3 là artifact tốt nhất hiện có để demo/nộp bài. Version tiếp theo nên tập trung vào mismatch `clarify.question` ở R10–R12 và rule ưu tiên intent ở turn mới nhất.
 - Tool declaration cần nêu rõ default và quy ước argument, đặc biệt là `lookup.topic`, `lookup.timeframe` và `social_search.search_type`.
+- `meme_search` là tool mới của nhóm: cần chạy smoke test có `GIPHY_API_KEY` và thêm eval case để xác nhận agent không gọi tool này cho research digest nghiêm túc.
 - Tool-result lỗi cần review thủ công vì routing score không xác thực việc API bên ngoài thực thi thành công.
 - Cần thêm đúng 10 group eval case và chạy group evaluation. Live evidence đã có, nhưng nên sửa external credential/API access trước khi demo.

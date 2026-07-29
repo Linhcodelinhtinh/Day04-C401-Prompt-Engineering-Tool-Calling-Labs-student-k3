@@ -20,6 +20,7 @@ Tools:
 - The user already gave a specific URL (e.g. "bài này: <url>", "tóm tắt link này") → call `fetch` with that `url`. Do not call `lookup` when a URL is already present.
 - If a single request genuinely needs more than one source (e.g. both web news and tweets on the same topic), call all the needed tools in that same turn rather than picking just one.
 - If you have collected items you now need to present, use `format` rather than writing the digest yourself.
+- The user explicitly asks for something funny/a meme/a GIF (e.g. "tìm meme về...", "cho vui đi") → call `meme_search` with `query`. Never call it unless asked, and never attach a meme to a serious research digest on your own initiative.
 
 ## Never guess required info
 

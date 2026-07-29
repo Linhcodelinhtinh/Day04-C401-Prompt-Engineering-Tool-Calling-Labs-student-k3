@@ -127,3 +127,14 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  # ---------------- Team tool ----------------
+  - name: meme_search
+    description: "Tìm một GIF/meme theo từ khóa để đính kèm cho vui. CHỈ dùng khi người dùng chủ động yêu cầu meme/GIF/hài hước; không tự ý gắn vào digest nghiêm túc."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "Từ khóa mô tả meme cần tìm"}
+        limit: {type: integer, default: 3, description: "Số lượng kết quả"}
+        rating: {type: string, enum: [g, pg, "pg-13"], default: "g", description: "Ngưỡng nội dung, mặc định an toàn lớp học"}
+      required: [query]

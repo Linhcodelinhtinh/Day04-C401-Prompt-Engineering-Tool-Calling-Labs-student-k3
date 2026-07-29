@@ -1,0 +1,559 @@
+{
+  "transcript_id": "v0_openrouter_20260729T161928643105",
+  "version": "v0",
+  "artifact_version": "v0+p1f969da4e22b+ta005c0da882f",
+  "prompt_hash": "1f969da4e22b8f54c821186fd6d09310022e9a7342e71f15570fe7273547a094",
+  "tools_hash": "a005c0da882fee3673bb23c22d9d3eed5acbd8a85e7b06861369fb6661a3dbe1",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T16:19:28",
+  "updated_at": "2026-07-29T16:21:31",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T16:19:39",
+      "user": "tìm bài báo về robot mới nhất",
+      "status": "answered",
+      "assistant_text": "Here are some recent research papers on robots:\n\n### Recent Research Papers on Robots\n\n1. **[S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information](http://arxiv.org/abs/2607.26047v1)**  \n   This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets.  \n   [PDF](https://arxiv.org/pdf/2607.26047v1)\n\n2. **[CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding](http://arxiv.org/abs/2601.02295v2)**  \n   CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest.  \n   [PDF](https://arxiv.org/pdf/2601.02295v2)\n\n3. **[DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models](http://arxiv.org/abs/2607.25918v1)**  \n   This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks.  \n   [PDF](https://arxiv.org/pdf/2607.25918v1)\n\n4. **[SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models](http://arxiv.org/abs/2607.25912v1)**  \n   The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities.  \n   [PDF](https://arxiv.org/pdf/2607.25912v1)\n\n5. **[Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting](http://arxiv.org/abs/2602.18314v2)**  \n   Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance.  \n   [PDF](https://arxiv.org/pdf/2602.18314v2)\n\nFeel free to explore these papers for more detailed insights!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "papers",
+              "args": {
+                "query": "robot",
+                "max_results": 5,
+                "sort_by": "lastUpdatedDate"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "papers",
+              "args": {
+                "query": "robot",
+                "max_results": 5,
+                "sort_by": "lastUpdatedDate"
+              },
+              "result": {
+                "tool": "arxiv_search",
+                "query": "robot",
+                "api_query": "all:robot",
+                "total_results": 48113,
+                "items": [
+                  {
+                    "arxiv_id": "2607.26047v1",
+                    "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                    "summary": "Acoustic information provides rich cues about object location, material properties, and changes caused by contact or motion. This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, in which robots must use auditory cues to determine manipulation targets. These tasks require sound source localization and identification for active exploration in robotic manipulation. Also, we propose a multimodal imitation learning framework, Spatial-Spectral Audio Action (S2A2), that integrates visual features with acoustic spatial and acoustic signal information for the acoustic-aware manipulation tasks. We implemented S2A2 models that integrates policies such as ACT, Diffusion Policy, VQ-BeT, and $π_0$, into our framework. Simulation experiments showed that the proposed method is the most effective for tasks requiring both position and timbre. Furthermore, real-robot experiments confirm the applicability of the proposed tasks and framework to real-world manipulation.",
+                    "authors": [
+                      "Kaneyoshi Hiratsuka",
+                      "Benjamin Yen",
+                      "Ryosuke Kojima"
+                    ],
+                    "published": "2026-07-28T17:56:07Z",
+                    "updated": "2026-07-28T17:56:07Z",
+                    "url": "http://arxiv.org/abs/2607.26047v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.RO",
+                    "categories": [
+                      "cs.RO"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2601.02295v2",
+                    "title": "CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding",
+                    "summary": "Current work on robot failure detection and correction typically operates in a post hoc manner, analyzing errors and applying corrections only after failures occur. This work introduces CycleVLA, a system that equips Vision-Language-Action models (VLAs) with proactive self-correction, the capability to anticipate incipient failures and recover before they fully manifest during execution. CycleVLA achieves this by integrating a progress-aware VLA that flags critical subtask transition points where failures most frequently occur, a VLM-based failure predictor and planner that triggers subtask backtracking upon predicted failure, and a test-time scaling strategy based on Minimum Bayes Risk (MBR) decoding to improve retry success after backtracking. Extensive experiments on the LIBERO and LIBERO-Plus simulation benchmarks show that CycleVLA surpasses the state-of-the-art VLA π0.5, improves success rates by correcting execution failures across VLAs of varying capability, from under-trained ones to fully converged policies, and that MBR serves as an effective zero-shot test-time scaling strategy for VLAs. On a real robot, CycleVLA reaches a 91% average success rate on one precise and two long-horizon manipulation tasks. We further conduct stress tests with multiple manually injected perturbations (e.g., swapping in a distractor at the expected location while relocating the true target object mid-execution), where CycleVLA corrects ~80% of injected failures and maintains success rates comparable to unperturbed execution. Project Page: https://dannymcy.github.io/cyclevla/",
+                    "authors": [
+                      "Chenyang Ma",
+                      "Kai Lu",
+                      "Guangyu Yang",
+                      "Jiuming Liu",
+                      "Shitong Xu",
+                      "Bill Byrne",
+                      "Ioannis Havoutis",
+                      "Niki Trigoni",
+                      "Andrew Markham"
+                    ],
+                    "published": "2026-01-05T17:31:01Z",
+                    "updated": "2026-07-28T17:46:45Z",
+                    "url": "http://arxiv.org/abs/2601.02295v2",
+                    "pdf_url": "https://arxiv.org/pdf/2601.02295v2",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.RO",
+                    "categories": [
+                      "cs.RO"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2607.25918v1",
+                    "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                    "summary": "World-Action Models (WAMs) augment robot policies with future visual prediction, but it remains unclear what the visual modality should learn for control. While photorealistic future prediction provides dense supervision, it also incurs substantial computation and can allocate capacity to texture, illumination, and background variations that are only weakly related to action selection. Recent efficient WAM variants suggest that the main benefit of the video branch may not lie in the rendered future itself, but in the control-relevant visual representations induced during training. In this work, we revisit future video prediction from a dynamic-centric perspective and ask whether an existing RGB-based WAM can be redirected from appearance-dominated reconstruction toward interaction-induced visual dynamics without introducing additional modality-specific predictions or online inputs at deployment. We propose DC-WAM, a dynamic-centric WAM framework that redistributes supervision and computation in the RGB video branch. At the supervision level, DC-WAM combines temporal-difference flow matching with trajectory-guided weighting, emphasizing dense temporal changes and localized regions where the gripper, manipulated objects, and contact areas move. At the reasoning level, DynaRoute predicts token-wise dynamic relevance and converts it into an attention bias, guiding the model toward control-relevant future tokens. Experiments in simulation and on real-world manipulation tasks show that DC-WAM consistently improves policy performance, especially under out-of-distribution perturbations in lighting, object appearance, and background texture.",
+                    "authors": [
+                      "Haoyuan Ji",
+                      "Lingxiang Fan",
+                      "Shang Su",
+                      "Yinqiao Lu",
+                      "Mengkai Shi",
+                      "Jun Gao",
+                      "Shuo Feng"
+                    ],
+                    "published": "2026-07-28T16:08:50Z",
+                    "updated": "2026-07-28T16:08:50Z",
+                    "url": "http://arxiv.org/abs/2607.25918v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.RO",
+                    "categories": [
+                      "cs.RO"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2607.25912v1",
+                    "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                    "summary": "Vision-Language-Action (VLA) models have shown strong potential for general robot manipulation, but most existing models rely on 2D visual-language backbones and lack fine-grained 3D understanding of target objects, especially under occlusion, pose variation, scale changes, and precise spatial interaction. We propose an object-centric 3D representation alignment framework built upon $π_0$, using SAM3D as a frozen 3D teacher to provide target-object 3D priors during training. Specifically, we localize task-relevant objects with object recognition models, generate corresponding object masks, and use SAM3D to extract dense object-level 3D representations, which are aligned with intermediate visual features of $π_0$. This enables the policy to internalize target-object 3D information while preserving the original RGB-language-to-action inference pipeline without requiring depth, point clouds, masks, SAM3D, or additional 3D modules at test time. Simulation experiments show consistent improvements, achieving 99.1\\% on LIBERO and an average length of 4.11 on CALVIN. Real-world experiments further demonstrate that our method is particularly effective in long-horizon manipulation scenarios where the robot must focus on different target objects across multiple subtasks.",
+                    "authors": [
+                      "Zonghe Liu",
+                      "Shanyuan Jie",
+                      "Xiaoquan Sun",
+                      "Chen Cao",
+                      "Zetian Xu",
+                      "Zongsheng Liu",
+                      "Jiayu Chen"
+                    ],
+                    "published": "2026-07-28T16:05:32Z",
+                    "updated": "2026-07-28T16:05:32Z",
+                    "url": "http://arxiv.org/abs/2607.25912v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.RO",
+                    "categories": [
+                      "cs.RO",
+                      "cs.AI"
+                    ]
+                  },
+                  {
+                    "arxiv_id": "2602.18314v2",
+                    "title": "Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting",
+                    "summary": "Real-time reconstruction of deformable surgical scenes is vital for advancing robotic surgery, improving intraoperative guidance, and enabling automation. Recent methods achieve dense reconstructions from da Vinci robotic surgery videos, with Gaussian Splatting (GS) offering real-time performance via graphics acceleration. However, reconstruction quality in occluded regions remains limited, and depth accuracy has not been fully assessed, as benchmarks like EndoNeRF and StereoMIS lack 3D ground truth. We propose Diff2DGS, a two-stage framework for reliable 3D reconstruction of occluded surgical scenes. First, a diffusion-based video module with temporal priors inpaints tissue occluded by instruments with high spatiotemporal consistency. Second, we adapt 2D Gaussian Splatting (2DGS) with a Learnable Deformation Model (LDM) to capture dynamic tissue deformation and anatomical geometry, and introduce adaptive depth weight to improve geometric fidelity. We further extend evaluation beyond image-quality metrics by performing quantitative depth analysis on the SCARED dataset. Diff2DGS outperforms state-of-the-art methods in both appearance and geometry, reaching 38.02 dB PSNR on EndoNeRF and 34.40 dB on StereoMIS. Our experiments also show that optimizing image quality alone does not necessarily ensure accurate 3D geometry.The code is available at https://diff2dgs.github.io/.",
+                    "authors": [
+                      "Tianyi Song",
+                      "Danail Stoyanov",
+                      "Evangelos Mazomenos",
+                      "Francisco Vasconcelos"
+                    ],
+                    "published": "2026-02-20T16:14:21Z",
+                    "updated": "2026-07-28T15:59:08Z",
+                    "url": "http://arxiv.org/abs/2602.18314v2",
+                    "pdf_url": "https://arxiv.org/pdf/2602.18314v2",
+                    "source": "arxiv.org",
+                    "primary_category": "cs.CV",
+                    "categories": [
+                      "cs.CV",
+                      "cs.GR",
+                      "cs.RO"
+                    ]
+                  }
+                ],
+                "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "format",
+              "args": {
+                "items": [
+                  {
+                    "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                    "url": "http://arxiv.org/abs/2607.26047v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                    "summary": "This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets."
+                  },
+                  {
+                    "title": "CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding",
+                    "url": "http://arxiv.org/abs/2601.02295v2",
+                    "pdf_url": "https://arxiv.org/pdf/2601.02295v2",
+                    "summary": "CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest."
+                  },
+                  {
+                    "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                    "url": "http://arxiv.org/abs/2607.25918v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                    "summary": "This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks."
+                  },
+                  {
+                    "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                    "url": "http://arxiv.org/abs/2607.25912v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                    "summary": "The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities."
+                  },
+                  {
+                    "title": "Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting",
+                    "url": "http://arxiv.org/abs/2602.18314v2",
+                    "pdf_url": "https://arxiv.org/pdf/2602.18314v2",
+                    "summary": "Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance."
+                  }
+                ],
+                "template": "sections",
+                "headline": "Recent Research Papers on Robots"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "format",
+              "args": {
+                "items": [
+                  {
+                    "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                    "url": "http://arxiv.org/abs/2607.26047v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                    "summary": "This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets."
+                  },
+                  {
+                    "title": "CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding",
+                    "url": "http://arxiv.org/abs/2601.02295v2",
+                    "pdf_url": "https://arxiv.org/pdf/2601.02295v2",
+                    "summary": "CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest."
+                  },
+                  {
+                    "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                    "url": "http://arxiv.org/abs/2607.25918v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                    "summary": "This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks."
+                  },
+                  {
+                    "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                    "url": "http://arxiv.org/abs/2607.25912v1",
+                    "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                    "summary": "The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities."
+                  },
+                  {
+                    "title": "Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting",
+                    "url": "http://arxiv.org/abs/2602.18314v2",
+                    "pdf_url": "https://arxiv.org/pdf/2602.18314v2",
+                    "summary": "Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance."
+                  }
+                ],
+                "template": "sections",
+                "headline": "Recent Research Papers on Robots"
+              },
+              "result": {
+                "tool": "render_digest",
+                "template": "sections",
+                "markdown": "# Recent Research Papers on Robots\n\n## Tổng hợp\n- This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets. - [arxiv.org](http://arxiv.org/abs/2607.26047v1)\n- CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest. - [arxiv.org](http://arxiv.org/abs/2601.02295v2)\n- This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks. - [arxiv.org](http://arxiv.org/abs/2607.25918v1)\n- The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities. - [arxiv.org](http://arxiv.org/abs/2607.25912v1)\n- Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance. - [arxiv.org](http://arxiv.org/abs/2602.18314v2)\n",
+                "item_count": 5
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "assistant_text": "Here are some recent research papers on robots:\n\n### Recent Research Papers on Robots\n\n1. **[S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information](http://arxiv.org/abs/2607.26047v1)**  \n   This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets.  \n   [PDF](https://arxiv.org/pdf/2607.26047v1)\n\n2. **[CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding](http://arxiv.org/abs/2601.02295v2)**  \n   CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest.  \n   [PDF](https://arxiv.org/pdf/2601.02295v2)\n\n3. **[DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models](http://arxiv.org/abs/2607.25918v1)**  \n   This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks.  \n   [PDF](https://arxiv.org/pdf/2607.25918v1)\n\n4. **[SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models](http://arxiv.org/abs/2607.25912v1)**  \n   The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities.  \n   [PDF](https://arxiv.org/pdf/2607.25912v1)\n\n5. **[Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting](http://arxiv.org/abs/2602.18314v2)**  \n   Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance.  \n   [PDF](https://arxiv.org/pdf/2602.18314v2)\n\nFeel free to explore these papers for more detailed insights!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "papers",
+          "args": {
+            "query": "robot",
+            "max_results": 5,
+            "sort_by": "lastUpdatedDate"
+          },
+          "result": {
+            "tool": "arxiv_search",
+            "query": "robot",
+            "api_query": "all:robot",
+            "total_results": 48113,
+            "items": [
+              {
+                "arxiv_id": "2607.26047v1",
+                "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                "summary": "Acoustic information provides rich cues about object location, material properties, and changes caused by contact or motion. This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, in which robots must use auditory cues to determine manipulation targets. These tasks require sound source localization and identification for active exploration in robotic manipulation. Also, we propose a multimodal imitation learning framework, Spatial-Spectral Audio Action (S2A2), that integrates visual features with acoustic spatial and acoustic signal information for the acoustic-aware manipulation tasks. We implemented S2A2 models that integrates policies such as ACT, Diffusion Policy, VQ-BeT, and $π_0$, into our framework. Simulation experiments showed that the proposed method is the most effective for tasks requiring both position and timbre. Furthermore, real-robot experiments confirm the applicability of the proposed tasks and framework to real-world manipulation.",
+                "authors": [
+                  "Kaneyoshi Hiratsuka",
+                  "Benjamin Yen",
+                  "Ryosuke Kojima"
+                ],
+                "published": "2026-07-28T17:56:07Z",
+                "updated": "2026-07-28T17:56:07Z",
+                "url": "http://arxiv.org/abs/2607.26047v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2601.02295v2",
+                "title": "CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding",
+                "summary": "Current work on robot failure detection and correction typically operates in a post hoc manner, analyzing errors and applying corrections only after failures occur. This work introduces CycleVLA, a system that equips Vision-Language-Action models (VLAs) with proactive self-correction, the capability to anticipate incipient failures and recover before they fully manifest during execution. CycleVLA achieves this by integrating a progress-aware VLA that flags critical subtask transition points where failures most frequently occur, a VLM-based failure predictor and planner that triggers subtask backtracking upon predicted failure, and a test-time scaling strategy based on Minimum Bayes Risk (MBR) decoding to improve retry success after backtracking. Extensive experiments on the LIBERO and LIBERO-Plus simulation benchmarks show that CycleVLA surpasses the state-of-the-art VLA π0.5, improves success rates by correcting execution failures across VLAs of varying capability, from under-trained ones to fully converged policies, and that MBR serves as an effective zero-shot test-time scaling strategy for VLAs. On a real robot, CycleVLA reaches a 91% average success rate on one precise and two long-horizon manipulation tasks. We further conduct stress tests with multiple manually injected perturbations (e.g., swapping in a distractor at the expected location while relocating the true target object mid-execution), where CycleVLA corrects ~80% of injected failures and maintains success rates comparable to unperturbed execution. Project Page: https://dannymcy.github.io/cyclevla/",
+                "authors": [
+                  "Chenyang Ma",
+                  "Kai Lu",
+                  "Guangyu Yang",
+                  "Jiuming Liu",
+                  "Shitong Xu",
+                  "Bill Byrne",
+                  "Ioannis Havoutis",
+                  "Niki Trigoni",
+                  "Andrew Markham"
+                ],
+                "published": "2026-01-05T17:31:01Z",
+                "updated": "2026-07-28T17:46:45Z",
+                "url": "http://arxiv.org/abs/2601.02295v2",
+                "pdf_url": "https://arxiv.org/pdf/2601.02295v2",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25918v1",
+                "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                "summary": "World-Action Models (WAMs) augment robot policies with future visual prediction, but it remains unclear what the visual modality should learn for control. While photorealistic future prediction provides dense supervision, it also incurs substantial computation and can allocate capacity to texture, illumination, and background variations that are only weakly related to action selection. Recent efficient WAM variants suggest that the main benefit of the video branch may not lie in the rendered future itself, but in the control-relevant visual representations induced during training. In this work, we revisit future video prediction from a dynamic-centric perspective and ask whether an existing RGB-based WAM can be redirected from appearance-dominated reconstruction toward interaction-induced visual dynamics without introducing additional modality-specific predictions or online inputs at deployment. We propose DC-WAM, a dynamic-centric WAM framework that redistributes supervision and computation in the RGB video branch. At the supervision level, DC-WAM combines temporal-difference flow matching with trajectory-guided weighting, emphasizing dense temporal changes and localized regions where the gripper, manipulated objects, and contact areas move. At the reasoning level, DynaRoute predicts token-wise dynamic relevance and converts it into an attention bias, guiding the model toward control-relevant future tokens. Experiments in simulation and on real-world manipulation tasks show that DC-WAM consistently improves policy performance, especially under out-of-distribution perturbations in lighting, object appearance, and background texture.",
+                "authors": [
+                  "Haoyuan Ji",
+                  "Lingxiang Fan",
+                  "Shang Su",
+                  "Yinqiao Lu",
+                  "Mengkai Shi",
+                  "Jun Gao",
+                  "Shuo Feng"
+                ],
+                "published": "2026-07-28T16:08:50Z",
+                "updated": "2026-07-28T16:08:50Z",
+                "url": "http://arxiv.org/abs/2607.25918v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO"
+                ]
+              },
+              {
+                "arxiv_id": "2607.25912v1",
+                "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                "summary": "Vision-Language-Action (VLA) models have shown strong potential for general robot manipulation, but most existing models rely on 2D visual-language backbones and lack fine-grained 3D understanding of target objects, especially under occlusion, pose variation, scale changes, and precise spatial interaction. We propose an object-centric 3D representation alignment framework built upon $π_0$, using SAM3D as a frozen 3D teacher to provide target-object 3D priors during training. Specifically, we localize task-relevant objects with object recognition models, generate corresponding object masks, and use SAM3D to extract dense object-level 3D representations, which are aligned with intermediate visual features of $π_0$. This enables the policy to internalize target-object 3D information while preserving the original RGB-language-to-action inference pipeline without requiring depth, point clouds, masks, SAM3D, or additional 3D modules at test time. Simulation experiments show consistent improvements, achieving 99.1\\% on LIBERO and an average length of 4.11 on CALVIN. Real-world experiments further demonstrate that our method is particularly effective in long-horizon manipulation scenarios where the robot must focus on different target objects across multiple subtasks.",
+                "authors": [
+                  "Zonghe Liu",
+                  "Shanyuan Jie",
+                  "Xiaoquan Sun",
+                  "Chen Cao",
+                  "Zetian Xu",
+                  "Zongsheng Liu",
+                  "Jiayu Chen"
+                ],
+                "published": "2026-07-28T16:05:32Z",
+                "updated": "2026-07-28T16:05:32Z",
+                "url": "http://arxiv.org/abs/2607.25912v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                "source": "arxiv.org",
+                "primary_category": "cs.RO",
+                "categories": [
+                  "cs.RO",
+                  "cs.AI"
+                ]
+              },
+              {
+                "arxiv_id": "2602.18314v2",
+                "title": "Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting",
+                "summary": "Real-time reconstruction of deformable surgical scenes is vital for advancing robotic surgery, improving intraoperative guidance, and enabling automation. Recent methods achieve dense reconstructions from da Vinci robotic surgery videos, with Gaussian Splatting (GS) offering real-time performance via graphics acceleration. However, reconstruction quality in occluded regions remains limited, and depth accuracy has not been fully assessed, as benchmarks like EndoNeRF and StereoMIS lack 3D ground truth. We propose Diff2DGS, a two-stage framework for reliable 3D reconstruction of occluded surgical scenes. First, a diffusion-based video module with temporal priors inpaints tissue occluded by instruments with high spatiotemporal consistency. Second, we adapt 2D Gaussian Splatting (2DGS) with a Learnable Deformation Model (LDM) to capture dynamic tissue deformation and anatomical geometry, and introduce adaptive depth weight to improve geometric fidelity. We further extend evaluation beyond image-quality metrics by performing quantitative depth analysis on the SCARED dataset. Diff2DGS outperforms state-of-the-art methods in both appearance and geometry, reaching 38.02 dB PSNR on EndoNeRF and 34.40 dB on StereoMIS. Our experiments also show that optimizing image quality alone does not necessarily ensure accurate 3D geometry.The code is available at https://diff2dgs.github.io/.",
+                "authors": [
+                  "Tianyi Song",
+                  "Danail Stoyanov",
+                  "Evangelos Mazomenos",
+                  "Francisco Vasconcelos"
+                ],
+                "published": "2026-02-20T16:14:21Z",
+                "updated": "2026-07-28T15:59:08Z",
+                "url": "http://arxiv.org/abs/2602.18314v2",
+                "pdf_url": "https://arxiv.org/pdf/2602.18314v2",
+                "source": "arxiv.org",
+                "primary_category": "cs.CV",
+                "categories": [
+                  "cs.CV",
+                  "cs.GR",
+                  "cs.RO"
+                ]
+              }
+            ],
+            "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+          }
+        },
+        {
+          "tool": "format",
+          "args": {
+            "items": [
+              {
+                "title": "S2A2: Audio-Visual Imitation Learning for Manipulation Tasks Using Acoustic Spatial Information",
+                "url": "http://arxiv.org/abs/2607.26047v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.26047v1",
+                "summary": "This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets."
+              },
+              {
+                "title": "CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding",
+                "url": "http://arxiv.org/abs/2601.02295v2",
+                "pdf_url": "https://arxiv.org/pdf/2601.02295v2",
+                "summary": "CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest."
+              },
+              {
+                "title": "DC-WAM: Dynamic-Centric Visual Supervision and Reasoning for World-Action Models",
+                "url": "http://arxiv.org/abs/2607.25918v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25918v1",
+                "summary": "This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks."
+              },
+              {
+                "title": "SAM3D-Guided Object-Centric Representation Alignment for Vision-Language-Action Models",
+                "url": "http://arxiv.org/abs/2607.25912v1",
+                "pdf_url": "https://arxiv.org/pdf/2607.25912v1",
+                "summary": "The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities."
+              },
+              {
+                "title": "Diff2DGS: Reliable Reconstruction of Occluded Surgical Scenes via 2D Gaussian Splatting",
+                "url": "http://arxiv.org/abs/2602.18314v2",
+                "pdf_url": "https://arxiv.org/pdf/2602.18314v2",
+                "summary": "Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance."
+              }
+            ],
+            "template": "sections",
+            "headline": "Recent Research Papers on Robots"
+          },
+          "result": {
+            "tool": "render_digest",
+            "template": "sections",
+            "markdown": "# Recent Research Papers on Robots\n\n## Tổng hợp\n- This paper introduces a new set of acoustic-aware manipulation tasks for imitation learning, where robots use auditory cues to determine manipulation targets. - [arxiv.org](http://arxiv.org/abs/2607.26047v1)\n- CycleVLA equips Vision-Language-Action models with proactive self-correction to anticipate failures and recover before they manifest. - [arxiv.org](http://arxiv.org/abs/2601.02295v2)\n- This work proposes a dynamic-centric framework for World-Action Models that improves policy performance in robotic manipulation tasks. - [arxiv.org](http://arxiv.org/abs/2607.25918v1)\n- The paper presents a 3D representation alignment framework for Vision-Language-Action models to enhance robot manipulation capabilities. - [arxiv.org](http://arxiv.org/abs/2607.25912v1)\n- Diff2DGS is a framework for reliable 3D reconstruction of occluded surgical scenes, improving robotic surgery guidance. - [arxiv.org](http://arxiv.org/abs/2602.18314v2)\n",
+            "item_count": 5
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T16:19:58"
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-07-29T16:20:45",
+      "user": "khảo sát các bài viết về các paper robot trên X",
+      "status": "answered",
+      "assistant_text": "Hiện tại, tôi không thể truy cập vào các bài viết trên X (Twitter) liên quan đến chủ đề \"robot\". Có thể có một số hạn chế trong việc truy cập dữ liệu từ nền tảng này. \n\nNếu bạn cần thông tin cụ thể hơn hoặc muốn tìm kiếm trên một nền tảng khác, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "social_search",
+              "args": {
+                "query": "robot",
+                "search_type": "Top"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "social_search",
+              "args": {
+                "query": "robot",
+                "search_type": "Top"
+              },
+              "result": {
+                "tool": "search_tweets",
+                "error": "HTTPError",
+                "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/search.php?query=robot&search_type=Top"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Hiện tại, tôi không thể truy cập vào các bài viết trên X (Twitter) liên quan đến chủ đề \"robot\". Có thể có một số hạn chế trong việc truy cập dữ liệu từ nền tảng này. \n\nNếu bạn cần thông tin cụ thể hơn hoặc muốn tìm kiếm trên một nền tảng khác, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "robot",
+            "search_type": "Top"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "error": "HTTPError",
+            "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/search.php?query=robot&search_type=Top"
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T16:20:51"
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-07-29T16:21:25",
+      "user": "bài viết mới nhất của elon musk là gì",
+      "status": "answered",
+      "assistant_text": "Hiện tại, tôi không thể truy cập vào bài viết mới nhất của Elon Musk trên Twitter do gặp lỗi truy cập. \n\nNếu bạn cần thông tin khác hoặc muốn tìm kiếm trên nền tảng khác, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "timeline",
+              "args": {
+                "screenname": "elonmusk"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "timeline",
+              "args": {
+                "screenname": "elonmusk"
+              },
+              "result": {
+                "tool": "get_user_tweets",
+                "error": "HTTPError",
+                "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/timeline.php?screenname=elonmusk"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Hiện tại, tôi không thể truy cập vào bài viết mới nhất của Elon Musk trên Twitter do gặp lỗi truy cập. \n\nNếu bạn cần thông tin khác hoặc muốn tìm kiếm trên nền tảng khác, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "elonmusk"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "error": "HTTPError",
+            "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/timeline.php?screenname=elonmusk"
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T16:21:31"
+    }
+  ]
+}

@@ -10,7 +10,12 @@ side_effect: false
 ---
 # meme_search
 
-Searches Giphy for a GIF/meme matching `query`. Only call this when the user
-explicitly asks for something funny/a meme/a GIF — never attach it to a
-serious research digest unasked. `rating` defaults to `g` to keep results
-classroom-safe.
+Searches Giphy for a GIF/meme matching `query`. Call it when the user
+explicitly asks for something funny/a meme/a GIF, or proactively when another
+tool's result surfaces a phrase/moment that is itself a well-known meme or
+viral joke (not just a mention of a public figure). Prefer `query` values
+built around well-known, recognizable meme subjects/formats (e.g. Ronaldo
+Siuu, Donald Trump, Elon Musk, Drake, distracted boyfriend) over vague
+descriptions — they return funnier, more recognizable results. Do not attach
+a meme to plain factual content that has nothing meme-worthy in it.
+`rating` defaults to `g` to keep results classroom-safe.

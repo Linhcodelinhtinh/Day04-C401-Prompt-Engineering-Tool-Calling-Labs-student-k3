@@ -1,35 +1,38 @@
 {
-  "run_id": "v1_B_base_openrouter_20260729T155452039060",
+  "run_id": "v1_B_base_openrouter_20260729T160017587828",
   "version": "v1",
-  "artifact_version": "v1+p1f969da4e22b+t6cdb53d5d7b8",
-  "prompt_hash": "1f969da4e22b8f54c821186fd6d09310022e9a7342e71f15570fe7273547a094",
-  "tools_hash": "6cdb53d5d7b8de80d60b298b1357f462cedbedfae261d5ba60b08ccc401687c5",
+  "artifact_version": "v1+p3d4ba3ec19d4+ta005c0da882f",
+  "prompt_hash": "3d4ba3ec19d427d0e2b7d38a1122213d0c356b292fab333e560b0ff17840ce6e",
+  "tools_hash": "a005c0da882fee3673bb23c22d9d3eed5acbd8a85e7b06861369fb6661a3dbe1",
   "phase": "B",
   "suite": "base",
   "provider": "openrouter",
   "model": "openai/gpt-4o-mini",
-  "system_prompt": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\system_prompt.md",
+  "system_prompt": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\system_prompt_v1.md",
   "tools": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\tools.yaml",
   "eval_cases": "data\\eval_base.json",
   "dataset_id": "day04_v2_research_base",
   "dataset_role": "base",
   "description": "Core eval cho research agent: routing đúng tool + đúng args, hỏi lại khi thiếu (ask_user), xác nhận trước khi gửi, và xử lý câu ngoài phạm vi / không cần tool. Chấm trên tool_calls + args (subset). KHÔNG sửa file này — chỉ thêm case vào eval_group.json.",
-  "generated_at": "2026-07-29T15:54:52",
+  "generated_at": "2026-07-29T16:00:17",
   "summary": {
     "total_cases": 20,
     "measured_cases": 20,
     "provider_error_cases": 0,
-    "passed_cases": 17,
-    "case_accuracy": 0.85,
-    "tool_routing_accuracy": 1.0,
-    "argument_accuracy": 0.85,
-    "multiturn_accuracy": 1.0,
+    "passed_cases": 14,
+    "case_accuracy": 0.7,
+    "tool_routing_accuracy": 0.95,
+    "argument_accuracy": 0.7,
+    "multiturn_accuracy": 0.8333,
     "failure_counts": {
+      "wrong_tool": 2,
       "missing_info": 2,
-      "wrong_boundary": 1
+      "wrong_boundary": 1,
+      "wrong_arg_value": 1
     },
     "observed_mismatch_counts": {
-      "wrong_arg_value": 3
+      "wrong_arg_value": 5,
+      "missing_tool_call": 1
     }
   },
   "results": [
@@ -63,7 +66,8 @@
           {
             "name": "timeline",
             "args": {
-              "screenname": "sama"
+              "screenname": "sama",
+              "limit": 1
             }
           }
         ],
@@ -77,7 +81,8 @@
         {
           "tool": "timeline",
           "args": {
-            "screenname": "sama"
+            "screenname": "sama",
+            "limit": 1
           },
           "result": {
             "tool": "get_user_tweets",
@@ -116,7 +121,7 @@
             "name": "social_search",
             "args": {
               "query": "GPT-5",
-              "search_type": "Top"
+              "limit": 5
             }
           }
         ],
@@ -131,7 +136,7 @@
           "tool": "social_search",
           "args": {
             "query": "GPT-5",
-            "search_type": "Top"
+            "limit": 5
           },
           "result": {
             "tool": "search_tweets",
@@ -166,73 +171,77 @@
         ]
       },
       "result": {
-        "passed": true,
+        "passed": false,
         "routing_correct": true,
-        "args_correct": true,
+        "args_correct": false,
         "actual_tool_calls": [
           {
             "name": "lookup",
             "args": {
-              "query": "AI",
+              "query": "AI news",
               "topic": "news",
-              "timeframe": "day"
+              "timeframe": "day",
+              "max_results": 5
             }
           }
         ],
         "actual_text": null,
         "case_failure_type": "wrong_tool",
-        "observed_mismatch": null,
-        "failure_type": null,
-        "failures": []
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_tool",
+        "failures": [
+          "query: expected 'AI', got 'AI news'"
+        ]
       },
       "tool_results": [
         {
           "tool": "lookup",
           "args": {
-            "query": "AI",
+            "query": "AI news",
             "topic": "news",
-            "timeframe": "day"
+            "timeframe": "day",
+            "max_results": 5
           },
           "result": {
             "tool": "web_search",
-            "query": "AI",
+            "query": "AI news",
             "topic": "news",
             "timeframe": "day",
             "items": [
+              {
+                "title": "The AI industry is picking sides on open or closed tech. Experts say follow the money. - NBC News",
+                "url": "https://www.nbcnews.com/tech/tech-news/experts-say-money-guiding-ai-industry-debate-open-closed-tech-rcna589495",
+                "source": "nbcnews.com",
+                "summary": "IE 11 is not supported. For an optimal experience visit our site on another browser. # The AI industry is picking sides on open or closed tech. Experts say follow the money. Nvidia assembled dozens of companies behind open-source AI days after a hack that scrambled the policy debate. Nvidia's headquarters in Santa Clara, Calif., in 2024.David Paul Morris / Bloomberg via Getty Images file. Add NBC News to Google. As Washington debates how to regulate advanced AI, Silicon Valley companies are increasingly sorting themselves into competing visions of open or closed AI systems. Experts say those positions often reflect something simpler than ideology: their business interests.Top AI chipmaker Nvidia underscored that divide Monday by assembling dozens of companies behind a new alliance supporting open-weight AI tools, while some of the industry’s largest developers of closed-weight AI models, including OpenAI and Anthropic, were notably absent. We are getting your experience ready.",
+                "score": 0.6216563
+              },
               {
                 "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
                 "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
                 "source": "ajot.com",
                 "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
-                "score": 0.2506701
+                "score": 0.5082762
               },
               {
-                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
-                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
-                "source": "washingtonpost.com",
-                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
-                "score": 0.23725812
-              },
-              {
-                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
-                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
-                "source": "techcrunch.com",
-                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
-                "score": 0.22859572
-              },
-              {
-                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
-                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
-                "source": "businessinsider.com",
-                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
-                "score": 0.22638187
+                "title": "NCTC Aims To Create ‘Easy Button For AI’ - TV News Check",
+                "url": "https://tvnewscheck.com/ai/article/nctc-aims-to-create-easy-button-for-ai/",
+                "source": "tvnewscheck.com",
+                "summary": "Broadcast Industry News - Television, Cable, On-demand. Home » NCTC Aims To Create ‘Easy Button For AI’. # NCTC Aims To Create ‘Easy Button For AI’. Following initial pilots, the National Content & Technology Cooperative is preparing to commercialize a subscription-based AI platform for its 700-plus membership of small and midsize broadband operators. Subscribe to our newsletter today and unlock a world of valuable content, expert tips, and exciting updates delivered straight to your inbox. ### Local TV Has An Overlooked Fix For The Midterm Inventory Crunch. Current job openings in the media industry, including roles in news production, digital media, management, and sales. ### Programming Everywhere Video: AI & Content’s Next Generation. Watch videoProgramming Everywhere Video: AI & Content’s Next Generation. ### Programming Everywhere Video: Putting The New Back In News. ### Programming Everywhere Video: TV Enters Its Context Era. ### Programming Everywhere Video: Multiplatform Strategies For Building Communities. ### Local TV Strategies: Local TV Finance Leaders On New Frontiers.",
+                "score": 0.4581311
               },
               {
                 "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
                 "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
                 "source": "voiceofalexandria.com",
                 "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
-                "score": 0.2164091
+                "score": 0.45711306
+              },
+              {
+                "title": "Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats - Infosecurity Magazine",
+                "url": "https://www.infosecurity-magazine.com/news/microsoft-ai-security-initiatives/",
+                "source": "infosecurity-magazine.com",
+                "summary": "Infosecurity Magazine Home » News » Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats. # Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats. At least that’s what David Weston, corporate VP for AI security at Microsoft told his audience during a Microsoft Security launch preview on July 27. During the event, the Redmond-based company announced a flurry of new AI and security products and initiatives. First, Microsoft launched Project Perception, a new agentic security system designed to help cyber defenders continuously identify, evaluate and reduce security risk. The tech firm also announced the launch of the Microsoft Security Frontier Offensive Research and Generative Exploration (FORGE) Lab. The lab will be led by Team Atlanta,, the group of cybersecurity researchers that won the US Defense Advanced Research Projects Agency’s (DARPA) AI Cyber Challenge (AIxCC) at DEFCON in the summer 2025, after Microsoft hired the team to head the new initiative, Gallot said.",
+                "score": 0.4450718
               }
             ]
           }
@@ -485,7 +494,8 @@
             "name": "social_search",
             "args": {
               "query": "OpenAI",
-              "search_type": "Top"
+              "search_type": "Top",
+              "limit": 5
             }
           }
         ],
@@ -500,7 +510,8 @@
           "tool": "social_search",
           "args": {
             "query": "OpenAI",
-            "search_type": "Top"
+            "search_type": "Top",
+            "limit": 5
           },
           "result": {
             "tool": "search_tweets",
@@ -531,7 +542,7 @@
         "routing_correct": true,
         "args_correct": true,
         "actual_tool_calls": [],
-        "actual_text": "Xin lỗi, nhưng tôi không thể giúp bạn với các bài toán toán học như tích phân. Tuy nhiên, bạn có thể tìm kiếm thông tin này trên các trang web học thuật hoặc diễn đàn toán học.",
+        "actual_text": "Nguyên hàm của \\( x^2 \\) là một hàm mà khi lấy đạo hàm sẽ cho ra \\( x^2 \\). Để tìm nguyên hàm, ta sử dụng công thức:\n\n\\[\n\\int x^n \\, dx = \\frac{x^{n+1}}{n+1} + C\n\\]\n\nvới \\( n \\neq -1 \\) và \\( C \\) là hằng số tích phân.\n\nÁp dụng công thức này cho \\( n = 2 \\):\n\n\\[\n\\int x^2 \\, dx = \\frac{x^{2+1}}{2+1} + C = \\frac{x^3}{3} + C\n\\]\n\nVậy nguyên hàm của \\( x^2 \\) là:\n\n\\[\n\\frac{x^3}{3} + C\n\\]",
         "case_failure_type": "out_of_scope",
         "observed_mismatch": null,
         "failure_type": null,
@@ -560,7 +571,7 @@
         "routing_correct": true,
         "args_correct": true,
         "actual_tool_calls": [],
-        "actual_text": "Tôi là một trợ lý nghiên cứu, có khả năng giúp bạn tìm kiếm thông tin trên mạng, xem các bài đăng gần đây trên mạng xã hội, và đọc các bài báo cụ thể. Tôi không thể giúp với các tác vụ không liên quan như viết mã hay giải toán. Nếu bạn có câu hỏi cụ thể hoặc cần tìm kiếm thông tin, hãy cho tôi biết!",
+        "actual_text": "Tôi là một trợ lý nghiên cứu, có khả năng hỗ trợ bạn trong nhiều lĩnh vực khác nhau, bao gồm:\n\n1. **Tìm kiếm thông tin**: Tôi có thể tìm kiếm bài viết, tin tức, và thông tin trên web về các chủ đề cụ thể.\n2. **Đọc và tóm tắt nội dung**: Tôi có thể đọc nội dung từ các trang web hoặc bài báo khoa học và tóm tắt cho bạn.\n3. **Theo dõi mạng xã hội**: Tôi có thể lấy các bài đăng gần đây từ các tài khoản mạng xã hội hoặc tìm kiếm các bài viết liên quan đến một chủ đề cụ thể.\n4. **Tìm kiếm tài liệu học thuật**: Tôi có thể tìm kiếm và cung cấp thông tin về các bài báo khoa học từ arXiv.\n5. **Hỗ trợ trong việc soạn thảo**: Tôi có thể giúp bạn định dạng và trình bày thông tin theo nhiều cách khác nhau.\n\nNếu bạn có yêu cầu cụ thể nào, hãy cho tôi biết!",
         "case_failure_type": "unnecessary_tool",
         "observed_mismatch": null,
         "failure_type": null,
@@ -598,7 +609,7 @@
           {
             "name": "clarify",
             "args": {
-              "question": "Bạn có thể cho biết tên tài khoản Twitter mà bạn muốn tóm tắt 5 tweet mới nhất không?"
+              "question": "Bạn muốn tóm tắt tweet từ tài khoản nào?"
             }
           }
         ],
@@ -614,11 +625,11 @@
         {
           "tool": "clarify",
           "args": {
-            "question": "Bạn có thể cho biết tên tài khoản Twitter mà bạn muốn tóm tắt 5 tweet mới nhất không?"
+            "question": "Bạn muốn tóm tắt tweet từ tài khoản nào?"
           },
           "result": {
             "tool": "ask_user",
-            "question": "Bạn có thể cho biết tên tài khoản Twitter mà bạn muốn tóm tắt 5 tweet mới nhất không?",
+            "question": "Bạn muốn tóm tắt tweet từ tài khoản nào?",
             "response_type": "text",
             "options": [],
             "awaiting_user": true
@@ -656,7 +667,7 @@
           {
             "name": "clarify",
             "args": {
-              "question": "Bạn vui lòng cung cấp đường link của bài viết mà bạn muốn tóm tắt không?"
+              "question": "Bạn có thể cung cấp liên kết đến bài viết mà bạn muốn tóm tắt không?"
             }
           }
         ],
@@ -672,11 +683,11 @@
         {
           "tool": "clarify",
           "args": {
-            "question": "Bạn vui lòng cung cấp đường link của bài viết mà bạn muốn tóm tắt không?"
+            "question": "Bạn có thể cung cấp liên kết đến bài viết mà bạn muốn tóm tắt không?"
           },
           "result": {
             "tool": "ask_user",
-            "question": "Bạn vui lòng cung cấp đường link của bài viết mà bạn muốn tóm tắt không?",
+            "question": "Bạn có thể cung cấp liên kết đến bài viết mà bạn muốn tóm tắt không?",
             "response_type": "text",
             "options": [],
             "awaiting_user": true
@@ -714,8 +725,7 @@
           {
             "name": "clarify",
             "args": {
-              "question": "Bạn có thể cung cấp nội dung cụ thể mà bạn muốn đăng lên Telegram không?",
-              "response_type": "text"
+              "question": "Bạn có thể cung cấp nội dung cụ thể mà bạn muốn đăng lên Telegram không?"
             }
           }
         ],
@@ -724,15 +734,14 @@
         "observed_mismatch": "wrong_arg_value",
         "failure_type": "wrong_boundary",
         "failures": [
-          "response_type: expected 'yes_no', got 'text'"
+          "response_type: expected 'yes_no', got None"
         ]
       },
       "tool_results": [
         {
           "tool": "clarify",
           "args": {
-            "question": "Bạn có thể cung cấp nội dung cụ thể mà bạn muốn đăng lên Telegram không?",
-            "response_type": "text"
+            "question": "Bạn có thể cung cấp nội dung cụ thể mà bạn muốn đăng lên Telegram không?"
           },
           "result": {
             "tool": "ask_user",
@@ -775,80 +784,84 @@
         ]
       },
       "result": {
-        "passed": true,
+        "passed": false,
         "routing_correct": true,
-        "args_correct": true,
+        "args_correct": false,
         "actual_tool_calls": [
           {
             "name": "lookup",
             "args": {
-              "query": "AI",
+              "query": "AI news",
               "topic": "news",
-              "timeframe": "day"
+              "timeframe": "day",
+              "max_results": 5
             }
           },
           {
             "name": "social_search",
             "args": {
               "query": "AI",
-              "search_type": "Top"
+              "limit": 5
             }
           }
         ],
         "actual_text": null,
         "case_failure_type": "wrong_tool",
-        "observed_mismatch": null,
-        "failure_type": null,
-        "failures": []
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_tool",
+        "failures": [
+          "query: expected 'AI', got 'AI news'"
+        ]
       },
       "tool_results": [
         {
           "tool": "lookup",
           "args": {
-            "query": "AI",
+            "query": "AI news",
             "topic": "news",
-            "timeframe": "day"
+            "timeframe": "day",
+            "max_results": 5
           },
           "result": {
             "tool": "web_search",
-            "query": "AI",
+            "query": "AI news",
             "topic": "news",
             "timeframe": "day",
             "items": [
+              {
+                "title": "The AI industry is picking sides on open or closed tech. Experts say follow the money. - NBC News",
+                "url": "https://www.nbcnews.com/tech/tech-news/experts-say-money-guiding-ai-industry-debate-open-closed-tech-rcna589495",
+                "source": "nbcnews.com",
+                "summary": "IE 11 is not supported. For an optimal experience visit our site on another browser. # The AI industry is picking sides on open or closed tech. Experts say follow the money. Nvidia assembled dozens of companies behind open-source AI days after a hack that scrambled the policy debate. Nvidia's headquarters in Santa Clara, Calif., in 2024.David Paul Morris / Bloomberg via Getty Images file. Add NBC News to Google. As Washington debates how to regulate advanced AI, Silicon Valley companies are increasingly sorting themselves into competing visions of open or closed AI systems. Experts say those positions often reflect something simpler than ideology: their business interests.Top AI chipmaker Nvidia underscored that divide Monday by assembling dozens of companies behind a new alliance supporting open-weight AI tools, while some of the industry’s largest developers of closed-weight AI models, including OpenAI and Anthropic, were notably absent. We are getting your experience ready.",
+                "score": 0.6216563
+              },
               {
                 "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
                 "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
                 "source": "ajot.com",
                 "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
-                "score": 0.2506701
+                "score": 0.5082762
               },
               {
-                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
-                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
-                "source": "washingtonpost.com",
-                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
-                "score": 0.23725812
-              },
-              {
-                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
-                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
-                "source": "techcrunch.com",
-                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
-                "score": 0.22859572
-              },
-              {
-                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
-                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
-                "source": "businessinsider.com",
-                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
-                "score": 0.22638187
+                "title": "NCTC Aims To Create ‘Easy Button For AI’ - TV News Check",
+                "url": "https://tvnewscheck.com/ai/article/nctc-aims-to-create-easy-button-for-ai/",
+                "source": "tvnewscheck.com",
+                "summary": "Broadcast Industry News - Television, Cable, On-demand. Home » NCTC Aims To Create ‘Easy Button For AI’. # NCTC Aims To Create ‘Easy Button For AI’. Following initial pilots, the National Content & Technology Cooperative is preparing to commercialize a subscription-based AI platform for its 700-plus membership of small and midsize broadband operators. Subscribe to our newsletter today and unlock a world of valuable content, expert tips, and exciting updates delivered straight to your inbox. ### Local TV Has An Overlooked Fix For The Midterm Inventory Crunch. Current job openings in the media industry, including roles in news production, digital media, management, and sales. ### Programming Everywhere Video: AI & Content’s Next Generation. Watch videoProgramming Everywhere Video: AI & Content’s Next Generation. ### Programming Everywhere Video: Putting The New Back In News. ### Programming Everywhere Video: TV Enters Its Context Era. ### Programming Everywhere Video: Multiplatform Strategies For Building Communities. ### Local TV Strategies: Local TV Finance Leaders On New Frontiers.",
+                "score": 0.4581311
               },
               {
                 "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
                 "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
                 "source": "voiceofalexandria.com",
                 "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
-                "score": 0.2164091
+                "score": 0.45711306
+              },
+              {
+                "title": "Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats - Infosecurity Magazine",
+                "url": "https://www.infosecurity-magazine.com/news/microsoft-ai-security-initiatives/",
+                "source": "infosecurity-magazine.com",
+                "summary": "Infosecurity Magazine Home » News » Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats. # Microsoft Launches Flurry of AI Security Initiatives to Combat AI-Enabled Threats. At least that’s what David Weston, corporate VP for AI security at Microsoft told his audience during a Microsoft Security launch preview on July 27. During the event, the Redmond-based company announced a flurry of new AI and security products and initiatives. First, Microsoft launched Project Perception, a new agentic security system designed to help cyber defenders continuously identify, evaluate and reduce security risk. The tech firm also announced the launch of the Microsoft Security Frontier Offensive Research and Generative Exploration (FORGE) Lab. The lab will be led by Team Atlanta,, the group of cybersecurity researchers that won the US Defense Advanced Research Projects Agency’s (DARPA) AI Cyber Challenge (AIxCC) at DEFCON in the summer 2025, after Microsoft hired the team to head the new initiative, Gallot said.",
+                "score": 0.4450718
               }
             ]
           }
@@ -857,7 +870,7 @@
           "tool": "social_search",
           "args": {
             "query": "AI",
-            "search_type": "Top"
+            "limit": 5
           },
           "result": {
             "tool": "search_tweets",
@@ -888,7 +901,7 @@
         "routing_correct": true,
         "args_correct": true,
         "actual_tool_calls": [],
-        "actual_text": "Xin lỗi, nhưng tôi không thể giúp bạn với việc viết mã hoặc các tác vụ lập trình. Tuy nhiên, tôi có thể giúp bạn với các thông tin khác hoặc tìm kiếm nội dung liên quan. Bạn cần hỗ trợ gì khác không?",
+        "actual_text": "Dưới đây là một hàm Python tính số Fibonacci bằng phương pháp đệ quy:\n\n```python\ndef fibonacci(n):\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci(n - 1) + fibonacci(n - 2)\n\n# Ví dụ sử dụng\nn = 10\nprint(f\"Fibonacci({n}) = {fibonacci(n)}\")\n```\n\nHàm `fibonacci` nhận một số nguyên `n` và trả về số Fibonacci tương ứng. Nếu `n` là 0, hàm trả về 0; nếu `n` là 1, hàm trả về 1. Đối với các giá trị lớn hơn, hàm sẽ gọi chính nó để tính toán tổng của hai số Fibonacci trước đó.",
         "case_failure_type": "out_of_scope",
         "observed_mismatch": null,
         "failure_type": null,
@@ -1004,75 +1017,40 @@
         ]
       },
       "result": {
-        "passed": true,
-        "routing_correct": true,
-        "args_correct": true,
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
         "actual_tool_calls": [
           {
-            "name": "lookup",
+            "name": "social_search",
             "args": {
               "query": "robotics",
-              "topic": "news",
-              "timeframe": "day"
+              "search_type": "Latest",
+              "limit": 5
             }
           }
         ],
         "actual_text": null,
         "case_failure_type": "wrong_arg_value",
-        "observed_mismatch": null,
-        "failure_type": null,
-        "failures": []
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "wrong_arg_value",
+        "failures": [
+          "missing tool call lookup",
+          "extra tool call social_search"
+        ]
       },
       "tool_results": [
         {
-          "tool": "lookup",
+          "tool": "social_search",
           "args": {
             "query": "robotics",
-            "topic": "news",
-            "timeframe": "day"
+            "search_type": "Latest",
+            "limit": 5
           },
           "result": {
-            "tool": "web_search",
-            "query": "robotics",
-            "topic": "news",
-            "timeframe": "day",
-            "items": [
-              {
-                "title": "End-to-end automation with Productive Robotics",
-                "url": "https://www.todaysmedicaldevelopments.com/product/end-to-end-automation-productive-robotics",
-                "source": "todaysmedicaldevelopments.com",
-                "summary": "Productive Robotics LLC designs, manufactures and services its collaborative robots, robotic MIG and laser welding systems and accessories in the US. Unlike conventional cobots which rely on 6 axes, Productive Robotics’ OB7, OB7 Stretch model, MAX 8, Max 12 and MAX 16 along with its Blaze and Blaze MAX series feature a 7-axis robotic arm that provides human-like dexterity to maneuver around obstacles without the need to redesign workspaces. A proprietary, “no programming” user interface allows [...] Productive Robotics will also demonstrate its new automated vision inspection system. Visitors will also be able to see automated MIG welding on Productive Robotics’ LF welding table and laser welding with its Max mobile system. Last year the company introduced its Blaze and Blaze Max robots with the new Miller OptX laser welder and its 7-axis Blaze plasma cutting system. [...] production. Unlike conventional cobots, Productive Robotics’ 7-axis OB7 collaborative robots feature zero programming in a plug-and-play configuration.",
-                "score": 0.5407062
-              },
-              {
-                "title": "All Saints School robotics teams win Innovate Award at premier event",
-                "url": "https://www.thealpenanews.com/news/local-news/2026/07/all-saints-school-robotics-teams-win-innovate-award-at-premier-event",
-                "source": "thealpenanews.com",
-                "summary": "The Innovate Award in the FIRST Tech Challenge celebrates a team with imaginative ingenuity, creativity, and inventiveness to bring a unique robot design solution to life, according to a Tuesday press release from ASCS. It highlights out-of-the-box thinking for the mechanisms used in the robot.\n\nEach year a new game is released in September and robotics teams have to design a robot that can complete the tasks in that game. [...] In the 2025-2026 season, teams had to build a robot that could collect and shoot different colored balls into a target area. The teams could earn extra points if they shot the balls in a specific color pattern. [...] website logo\n\n# All Saints School robotics teams win Innovate Award at premier event\n\n## Trending\n\nALPENA -- After a successful 2025-2026 robotics season, the All Saints Holy Gears were one of 48 teams from across the world invited to the Canadian Rockies Premier Event, where they were the winners of the Innovate Award.",
-                "score": 0.3955783
-              },
-              {
-                "title": "Developing Healthcare Robotics with GPU-Native Medical ...",
-                "url": "https://developer.nvidia.com/blog/developing-healthcare-robotics-with-gpu-native-medical-physics-simulation",
-                "source": "developer.nvidia.com",
-                "summary": "Healthcare robotics faces critical challenges in data scarcity, generalization, and development velocity due to limited access to annotated demonstrations, the prevalence of rare but clinically important scenarios, and slow, resource-intensive prototyping cycles. [...] AI-generated content may summarize information incompletely. Verify important information. Learn more\n\nUnlike autonomous driving or industrial robotics, healthcare robotics can’t rely on internet-scale data collection or unlimited real-world experimentation. Every demonstration requires specialized equipment, clinical expertise, and access to patients or laboratory environments. This creates three fundamental challenges for developers. [...] The third challenge is development velocity. Medical robotics development relies on benchtop phantoms, cadaver studies, animal models, and limited clinical evaluations. These remain essential, but they are inherently sequential, expensive, and difficult to scale. Iterating on designs and algorithms currently takes months, pushing total development cycles to 4–7 years.",
-                "score": 0.37600484
-              },
-              {
-                "title": "FCC bans humanoid robots from China, citing ‘unacceptable risks’",
-                "url": "https://www.theguardian.com/us-news/2026/jul/28/fcc-ban-humanoid-robots-china",
-                "source": "theguardian.com",
-                "summary": "The FCC defines the banned robots as “advanced robotic devices”, which include humanoids and animal-like quadrupeds.\n\n“Advanced robotic devices collect data that could be leveraged by malign actors to surveil Americans, enhance the capabilities of foreign intelligence services, or to remotely commandeer the robots,” FCC officials wrote in their determination of the threat posed by robots. [...] “The President has made clear that the United States must have independent and secure supply chains for critical and emerging technologies like robotic devices and power inverters,” an ⁠administration official, who declined to be named, told Reuters.\n\n“Economic security is national security, and the Trump administration continues to implement a nuanced and multi-faceted policy agenda to reindustrialize America,” he added.",
-                "score": 0.34468657
-              },
-              {
-                "title": "Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy | South China Morning Post",
-                "url": "https://www.scmp.com/tech/tech-trends/article/3362213/lenovo-capital-takes-aim-robotics-coding-agents-sniper-ai-investment-strategy",
-                "source": "scmp.com",
-                "summary": "The venture capital arm of Lenovo Group is doubling down on artificial intelligence for the next industrial cycle, expanding its focus beyond foundational models into robotics, computing infrastructure and AI agents, according to a senior executive. [...] Artificial intelligence\n\nTechTech Trends\n\n# Lenovo Capital takes aim at robotics, coding agents in ‘sniper’ AI investment strategy\n\nChinese firm makes long-term bets on 100 artificial intelligence companies, from chip and hardware manufacturers to models and applications\n\n2-MIN READ2-MIN\n\nA Lenovo robot forms a heart shape with its hands during the 2025 World AI Conference in Shanghai. Photo: VCG\n\nBen Jiangin Beijing [...] Lenovo Capital has made long-term bets on more than 100 AI companies across the value chain, ranging from chips and hardware infrastructure to models and applications, Song Chunyu, chief investment officer and senior partner at the unit, told the South China Morning Post and other media on Tuesday.\n\nAI-related businesses now make up nearly one-third of the fund’s roughly 300 portfolio holdings, he said.",
-                "score": 0.32749674
-              }
-            ]
+            "tool": "search_tweets",
+            "error": "RuntimeError",
+            "message": "Missing RAPIDAPI_KEY env var"
           }
         }
       ]
@@ -1337,7 +1315,8 @@
             "args": {
               "query": "OpenAI",
               "topic": "news",
-              "timeframe": "week"
+              "timeframe": "day",
+              "max_results": 5
             }
           }
         ],
@@ -1353,48 +1332,49 @@
           "args": {
             "query": "OpenAI",
             "topic": "news",
-            "timeframe": "week"
+            "timeframe": "day",
+            "max_results": 5
           },
           "result": {
             "tool": "web_search",
             "query": "OpenAI",
             "topic": "news",
-            "timeframe": "week",
+            "timeframe": "day",
             "items": [
               {
-                "title": "Man sues OpenAI over ‘dangerous’ medical advice from ChatGPT",
-                "url": "https://www.courthousenews.com/man-sues-openai-over-dangerous-medical-advice-from-chatgpt",
-                "source": "courthousenews.com",
-                "summary": "SAN FRANCISCO — A Florida man who sought health guidance on ChatGPT sued OpenAI Wednesday, claiming the artificial intelligence chatbot gave him dangerously inaccurate medical advice that led him to delay seeking professional treatment for a pulmonary embolism. [...] And Winters wants the court to pause the operation of ChatGPT Health, which OpenAI announced in January as a “a dedicated experience in ChatGPT designed for health and wellness,” unless “independent third parties determine the product to be safe through comprehensive safety audits.\"\n\n“OpenAI cannot continue to treat human welfare as expendable in pursuit of market dominance,” Winters says in the complaint. [...] Winters accuses OpenAI and its CEO, Sam Altman, of prioritizing profit over necessary guardrails and failing to warn users about critical safety concerns of ChatGPT-4o to secure a competitive advantage over other competitors in the AI industry.",
-                "score": 0.6216563
+                "title": "OpenAI's $1 Trillion IPO Ambition Faces New Timing Test as Anthropic Gains Ground - Dailyhunt",
+                "url": "http://m.dailyhunt.in/news/india/english/benzinga-epaper-benzinga/openais+1+trillion+ipo+ambition+faces+new+timing+test+as+anthropic+gains+ground-newsid-n721305301",
+                "source": "m.dailyhunt.in",
+                "summary": "**OpenAI** may be pushing back its public debut as it weighs whether market conditions can support its reported goal of a $1 trillion valuation. The analysts noted that OpenAI's decision on timing effectively acts as a pricing signal: management must choose between going public sooner at a potentially discounted valuation or waiting longer in hopes of reaching the $1 trillion mark. Despite OpenAI's higher valuation (private market valuations of $852 billion), PitchBook ($965 billion) suggested Anthropic currently commands a more attractive valuation relative to its business quality score. PitchBook said investors should watch for OpenAI to convert its confidential filing into a public S-1, the pricing of its employee tender offer, SpaceX’s Aug. 6 earnings and lockup timeline, and whether Anthropic proceeds with an October IPO. The firm said its outlook would change if OpenAI moves ahead with a 2026 IPO or if its public S-1 shows investors are willing to support a $1 trillion valuation sooner than expected.",
+                "score": 0.6675167
               },
               {
-                "title": "OpenAI’s High-Stakes, High-Touch Push to Make AI Work for Business",
-                "url": "https://www.wsj.com/cio-journal/openais-high-stakes-high-touch-push-to-make-ai-work-for-business-7f08b7d4",
-                "source": "wsj.com",
-                "summary": "## The AI model maker has formed a services company staffed with forward deployed engineers and a partnership program to help businesses get real value from their technology\n\nBy\n\nand\n\nListen\n\n(2 min)\n\nColin Jarvis, head of Forward Deployed Engineering for OpenAI, speaks at an event with SoftBank.\n\nOpenAI’s push into the enterprise market is ramping up as it faces increasing pressure to prove that AI can actually deliver for big businesses. [...] The artificial intelligence giant in recent months has invested $150 million in a new enterprise partner program and launched the OpenAI Deployment Co., a stand-alone services firm that will embed technical expertise with business customers.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n## Videos\n\n### Most Popular in CIO [...] This copy is for your personal, non-commercial use only. Distribution and use of this material are governed by\nour Subscriber Agreement and by copyright law. For non-personal use or to order multiple copies, please contact\nDow Jones Reprints at 1-800-843-0008 or visit www.djreprints.com.\n\n# OpenAI’s High-Stakes, High-Touch Push to Make AI Work for Business",
-                "score": 0.57952
+                "title": "OpenAI's rogue models roamed the internet for 4 days and staged a second attack - Politico",
+                "url": "https://www.politico.com/news/2026/07/28/openai-rogue-models-hugging-face-breach-01014572",
+                "source": "politico.com",
+                "summary": "GLOBAL POLITICS & POLICY 4 items. A second AI company confirmed that one of its customers was also targeted by OpenAI’s models. The powerful artificial intelligence models from OpenAI that went rogue and mounted an unprecedented, autonomous cyberattack earlier this month spent more than four days loose on the internet orchestrating the hack, according to a new analysis from the platform that was breached. Separately, a second AI company confirmed that one of its customers was also targeted by OpenAI’s models during the same event, raising questions about how OpenAI failed to detect the alarming activity for days. But in a new analysis published Tuesday, Hugging Face said OpenAI’s two models — one publicly released and a second unreleased — did much more: They carried out 17,600 hacking actions on the internet between July 9 and July 13, during which time the models moved from their first foothold on the open internet to inside Hugging Face’s servers.",
+                "score": 0.6356076
               },
               {
-                "title": "Its AI agent spent days hacking a company, but sources say OpenAI ...",
-                "url": "https://www.reuters.com/business/its-ai-agent-spent-days-hacking-company-sources-say-openai-did-not-notice-week-2026-07-24",
-                "source": "reuters.com",
-                "summary": "Four people familiar with OpenAI’s model-training practices say the company often runs several different model ​evaluations at the same time, all of which operate at high speeds and generate such enormous amounts of data that employees sometimes struggle to keep up.\n\nBy the time ​OpenAI alerted Hugging Face, the ⁠AI library had already called the FBI to report the hack, according to a person familiar with the matter. Reuters could not establish whether the bureau had opened an investigation. [...] The FBI declined to comment about the incident.\n\nThe incident, which evoked science fiction scenarios about humans losing control of dangerous AI systems, comes at a delicate ​time for OpenAI, the company behind ChatGPT. Its executives are preparing for a possible initial public offering that could come as soon as this year to help finance the billions needed to fund its growth in years to come.\n\nAdvertisement · Scroll to continue [...] ### LSEG Products\n\n   #### Workspace, opens new tab\nAccess unmatched financial data, news and content in a highly-customised workflow experience on desktop, web and mobile.\n\n   #### Data Catalogue, opens new tab\nBrowse an unrivalled portfolio of real-time and historical market data and insights from worldwide sources and experts.",
-                "score": 0.57035583
+                "title": "OpenAI Plans to Spend Over $30 Billion on Georgia Data Center - Insurance Journal",
+                "url": "https://www.insurancejournal.com/news/southeast/2026/07/28/879346.htm",
+                "source": "insurancejournal.com",
+                "summary": "# OpenAI Plans to Spend Over $30 Billion on Georgia Data Center. OpenAI plans to spend tens of billions of dollars on a massive new data center near Savannah, Georgia as part of the ChatGPT maker’s push to keep up with surging demand for artificial intelligence software. The startup has contracted with Georgia Power Co. and secured 3.2 gigawatts of energy for the data center complex in Effingham County, potentially setting the facility up to rank among OpenAI’s largest to date. OpenAI committed to spend $20 billion in the county in order to qualify for an incentive package that will be voted on this week, the company said. The startup is currently looking for partners to help finance and develop the data center, Katti said, and may opt to do some of the operation itself. The company has partnered with developers on large data centers in Europe, the Middle East and several US states as part of its Stargate initiative.",
+                "score": 0.5455042
               },
               {
-                "title": "How OpenAI Lost Control of an AI Model—and What ...",
-                "url": "https://time.com/article/2026/07/24/openai-hugging-face-attack",
-                "source": "time.com",
-                "summary": "OpenAI was evaluating its artificial intelligence models’ ability to exploit vulnerable software when instead the models hacked the infrastructure surrounding the test, broke containment, and attacked a real company, OpenAI revealed on July 21. Observers say this is the first real-world instance of AI doing something researchers have long worried about: a loss-of-control scenario. If the industry fails to learn from it, it is unlikely to be the last. [...] OpenAI did not respond to TIME’s request for comment, but has said it has partnered with Hugging Face to conduct a thorough investigation and will share more details once complete. But perhaps more worryingly, OpenAI is not legally compelled to disclose the incident in the first place. [...] # What happened?\n\nOn July 16, Hugging Face said it had been hit by an unusually automated cyberattack. Over the course of a weekend, AI agents carried out thousands of actions across many temporary virtual computers, moving through the company’s internal systems and shifting the infrastructure coordinating the attack between online services to keep it running. Five days later, OpenAI disclosed that its own models were responsible.",
-                "score": 0.5674818
+                "title": "OpenAI's agents hacked second firm during model testing - Axios",
+                "url": "https://www.axios.com/2026/07/28/openai-hugging-face-modal-labs-hack",
+                "source": "axios.com",
+                "summary": "OpenAI's models were responsible for another hack on an outside firm, a security executive told Reuters and confirmed to Axios. **Why it matters:** This is the second company that OpenAI's rogue agent system hacked after breaking containment during testing earlier this month. **State of play:** Modal Labs CTO Akshat Bubna told Reuters — and confirmed to Axios — Tuesday that one of its customers' assets was hacked when an OpenAI agent broke into Hugging Face's systems earlier this month. * Hugging Face said in a technical write-up of the hack Monday that when OpenAI's AI agent system broke into its backend, the agent also accessed an isolated testing environment \"hosted on a ​third-party provider's infrastructure.\". * \"We're aware a Modal customer published an unauthenticated endpoint that allowed anyone on the internet to use their sandboxes for code execution,\" Bubna said in a statement to Axios. Modal's platform was not compromised in any way.\". Modal's infrastructure was not compromised in any way.\".",
+                "score": 0.52510154
               },
               {
-                "title": "How are companies, governments responding to the OpenAI hack?",
-                "url": "https://www.aljazeera.com/news/2026/7/23/how-are-companies-governments-responding-to-the-openai-hack",
-                "source": "aljazeera.com",
-                "summary": "ChatGPT owner OpenAI has admitted an “unprecedented cyber incident” – two of its most capable artificial intelligence models hacked into another AI company on their own – stirring debates over the need for stronger technology guardrails.\n\nThe company said its AI systems broke out of a testing environment and hacked startup Hugging Face.\n\nThe startup had disclosed on July 16 that its servers were hacked by an unknown but sophisticated agent acting on its own. [...] Advertisement\n\nThe incident occurred during an OpenAI internal testing session designed to assess the models’ cybersecurity capabilities. OpenAI had removed standard safety measures for the test.\n\nBoth sought to cheat their way through a problem during the test, OpenAI said. They went to “extreme lengths to achieve a rather narrow testing goal” and “found ways to gain access to secret information that it could use to cheat the evaluation”. [...] Live\n\nLive\n\nEXPLAINER\n\nNews|Technology\n\n# How are companies, governments responding to the OpenAI hack?\n\nOpenAI’s AI models hacked into another company, prompting calls for renewed scrutiny of safeguards for advanced AI systems.\n\nSave\n\nShare\n\nA man with a microphone\n\nOpenAI CEO Sam Altman speaks during a panel discussion at the Technical University of Berlin on February 7, 2025, in Berlin, Germany [Sean Gallup/Getty Images]\n\n\n\nBy Al Jazeera Staff\n\nPublished On 23 Jul 202623 Jul 2026",
-                "score": 0.5194
+                "title": "OpenAI’s Rogue AI Agent Hacked More Than Just Hugging Face - WIRED",
+                "url": "https://www.wired.com/story/openais-rogue-ai-agent-hacked-more-than-just-hugging-face/",
+                "source": "wired.com",
+                "summary": "# OpenAI’s Rogue AI Agent Hacked More Than Just Hugging Face. OpenAI said Tuesday that the rogue AI agent that breached Hugging Face’s platform also hacked multiple third-party accounts and services as part of the attack. It's now clear that the unprecedented security incident, which arose during an internal test of OpenAI’s latest AI models, was more extensive than the company initially disclosed. In an updated blog post, OpenAI said that an ongoing review of the incident revealed that “four accounts” tied to “publicly available services” were used by the AI agent as part of a larger effort to hack Hugging Face. One of the additional accounts compromised by OpenAI’s agent was used as an “outbound relay and staging path,” potentially to obscure where the attack on Hugging Face was coming from, the company said. Reuters reported on Tuesday that a customer of Modal, a company that offers software infrastructure for training and running AI services, was one of the entities compromised by OpenAI’s agent.",
+                "score": 0.5201313
               }
             ]
           }

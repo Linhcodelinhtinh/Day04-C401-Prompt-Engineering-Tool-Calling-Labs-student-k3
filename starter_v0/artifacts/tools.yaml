@@ -49,13 +49,13 @@ tools:
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Read the content of a webpage ONLY when a valid URL is already provided. Never use this tool to search for webpages. If no URL is available, use lookup first."
     parameters:
       type: object
       properties:
         url: {type: string, default: "", description: "Địa chỉ"}
       required: [url]
-
+ 
   - name: format
     description: "Trình bày dữ liệu đã có thành văn bản."
     parameters:
@@ -79,7 +79,9 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Send text to Telegram. Always require explicit user confirmation before calling this tool. Never infer confirmation.
+
+    If the user has not clearly confirmed, call clarify first."
     parameters:
       type: object
       properties:

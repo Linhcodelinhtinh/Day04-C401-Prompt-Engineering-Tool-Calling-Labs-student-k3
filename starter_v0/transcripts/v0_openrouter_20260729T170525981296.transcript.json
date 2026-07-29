@@ -1,0 +1,108 @@
+{
+  "transcript_id": "v0_openrouter_20260729T170525981296",
+  "version": "v0",
+  "artifact_version": "v0+p8ec43a5c3dfc+teb772320daac",
+  "prompt_hash": "8ec43a5c3dfc7e50633a71e8049a20a9dc6f3268a64d70085b2d2e37ffc02617",
+  "tools_hash": "eb772320daacb4f52eb2a4606efcee48ab09dad47d59fa2669b1b0ddd4e4c643",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\Admin\\.vscode\\Day04-C401-Prompt-Engineering-Tool-Calling-Labs-student-k3\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T17:05:25",
+  "updated_at": "2026-07-29T17:06:22",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T17:05:29",
+      "user": "mẹ mày béo",
+      "status": "answered",
+      "assistant_text": "Tôi không thể giúp với yêu cầu này. Nếu bạn có câu hỏi hoặc yêu cầu nào khác, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Tôi không thể giúp với yêu cầu này. Nếu bạn có câu hỏi hoặc yêu cầu nào khác, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-07-29T17:05:35"
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-07-29T17:05:55",
+      "user": "know the mc donald trump?",
+      "status": "answered",
+      "assistant_text": "Yes, Donald Trump is a prominent American businessman, television personality, and politician who served as the 45th President of the United States from January 20, 2017, to January 20, 2021. He is known for his controversial policies, business ventures, and distinctive communication style, particularly on social media. If you have specific questions or topics related to Donald Trump that you'd like to know more about, feel free to ask!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Yes, Donald Trump is a prominent American businessman, television personality, and politician who served as the 45th President of the United States from January 20, 2017, to January 20, 2021. He is known for his controversial policies, business ventures, and distinctive communication style, particularly on social media. If you have specific questions or topics related to Donald Trump that you'd like to know more about, feel free to ask!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-07-29T17:05:59"
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-07-29T17:06:18",
+      "user": "show the memes of trumps",
+      "status": "answered",
+      "assistant_text": "It seems there was an issue retrieving memes related to Donald Trump. Unfortunately, I can't access meme content at the moment. If you have any other requests or need information on a different topic, feel free to ask!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "meme_search",
+              "args": {
+                "query": "Donald Trump",
+                "limit": 5
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "meme_search",
+              "args": {
+                "query": "Donald Trump",
+                "limit": 5
+              },
+              "result": {
+                "tool": "meme_search",
+                "error": "RuntimeError",
+                "message": "Missing GIPHY_API_KEY env var"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "It seems there was an issue retrieving memes related to Donald Trump. Unfortunately, I can't access meme content at the moment. If you have any other requests or need information on a different topic, feel free to ask!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "meme_search",
+          "args": {
+            "query": "Donald Trump",
+            "limit": 5
+          },
+          "result": {
+            "tool": "meme_search",
+            "error": "RuntimeError",
+            "message": "Missing GIPHY_API_KEY env var"
+          }
+        }
+      ],
+      "ended_at": "2026-07-29T17:06:22"
+    }
+  ]
+}

@@ -1,7 +1,5 @@
 # Báo cáo Lab Day 04 v2 — Research Agent
 
-> Phần A đã sẵn sàng cho demo. Phần B chỉ sử dụng bằng chứng hiện có trong repository tính đến ngày 29/07/2026; các hạng mục chưa có dữ liệu được ghi rõ.
-
 ## Thông tin nhóm
 
 - Nhóm: _Cần bổ sung_
@@ -15,7 +13,7 @@
 
 Research Agent có thể tìm bài đăng gần đây của một tài khoản cụ thể, tìm kiếm bài đăng mạng xã hội hoặc thông tin web/tin tức, đọc nội dung từ URL do người dùng cung cấp và tổng hợp kết quả thành Markdown digest. Agent cũng hỏi lại khi thiếu thông tin thiết yếu và bắt buộc xác nhận rõ ràng trước khi gửi nội dung lên Telegram.
 
-**URL demo:** _Streamlit chạy local: `http://localhost:8501`_
+**URL demo:** _Streamlit chạy local: `http://localhost:8501`
 
 ## A2. Các tool hiện có
 

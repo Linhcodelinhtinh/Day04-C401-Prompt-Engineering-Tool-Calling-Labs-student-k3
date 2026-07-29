@@ -1,7 +1,263 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Nhóm tự viết 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case có id, phase=B, failure_type, expect, metadata.what_it_tests.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "B01_news_today",
+      "phase": "B",
+      "query": "Hôm nay có tin AI mới nào không?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Routing web news đúng: câu hỏi tin tức AI hôm nay phải gọi lookup topic=news timeframe=day."
+      }
+    },
+    {
+      "id": "B02_latest_tweet",
+      "phase": "B",
+      "query": "Tweet mới nhất của Bill Gates là gì?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "gatesnotes"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Mapping tên người nổi tiếng sang handle Twitter và gọi timeline."
+      }
+    },
+    {
+      "id": "B03_top_tweets",
+      "phase": "B",
+      "query": "Cho mình 5 tweet phổ biến nhất về ChatGPT.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "ChatGPT",
+              "search_type": "Top",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Trích đúng limit=5 và search_type=Top từ yêu cầu 'phổ biến nhất'."
+      }
+    },
+    {
+      "id": "B04_fetch_article",
+      "phase": "B",
+      "query": "Đọc giúp mình nội dung ở https://openai.com/blog/gpt-5",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/blog/gpt-5"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "URL cụ thể phải gọi fetch, không gọi lookup chung chung."
+      }
+    },
+    {
+      "id": "B05_capabilities_no_tool",
+      "phase": "B",
+      "query": "Bạn có thể làm gì?",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Câu hỏi meta về khả năng agent không cần gọi tool."
+      }
+    },
+    {
+      "id": "B06_multiturn_elon3",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tóm tắt 3 tweet mới nhất của Elon Musk."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ cần 3 tweet thôi nhé."
+        },
+        {
+          "role": "user",
+          "content": "Vẫn là của Elon Musk." 
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn carryover: giữ limit=3 và map đúng handle elonmusk."
+      }
+    },
+    {
+      "id": "B07_multiturn_robotics_week",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tin công nghệ tuần này." 
+        },
+        {
+          "role": "user",
+          "content": "Chuyển sang robotics thôi." 
+        },
+        {
+          "role": "user",
+          "content": "Vẫn giữ là tin của tuần này." 
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Xử lý multi-turn: giữ timeframe week và topic news khi đổi truy vấn sang robotics."
+      }
+    },
+    {
+      "id": "B08_multiturn_url_supply",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tóm tắt bài viết này hộ mình." 
+        },
+        {
+          "role": "user",
+          "content": "https://anthropic.com/news/claude" 
+        },
+        {
+          "role": "user",
+          "content": "Chỉ dùng đúng đường link đó." 
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://anthropic.com/news/claude"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Sau khi cung cấp URL, latest user intent yêu cầu đọc đúng link đó."
+      }
+    },
+    {
+      "id": "B09_multiturn_confirm_action",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin này lên Telegram giúp mình." 
+        },
+        {
+          "role": "user",
+          "content": "Nội dung này cần gửi ngay." 
+        },
+        {
+          "role": "user",
+          "content": "Hãy hỏi tôi trước khi gửi." 
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Action boundary: với gửi Telegram cần confirm yes/no, không tự gọi send."
+      }
+    },
+    {
+      "id": "B10_multiturn_no_tool",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Bạn có thể cho tôi biết công cụ này dùng để làm gì không?" 
+        },
+        {
+          "role": "user",
+          "content": "Tôi không cần tìm thêm trên web." 
+        },
+        {
+          "role": "user",
+          "content": "Chỉ trả lời trực tiếp thôi." 
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Multi-turn meta question nên trả lời không cần gọi tool."
+      }
+    }
+  ]
 }

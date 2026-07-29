@@ -266,7 +266,7 @@ def main() -> None:
     parser.add_argument("--version", required=True)
     parser.add_argument("--provider", choices=["openai", "openrouter", "anthropic", "gemini"], required=True)
     parser.add_argument("--model", default=None)
-    parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt_v1.md")
+    parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt_final_boss.md")
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
     parser.add_argument("--eval-cases", type=Path, default=DATA_DIR / "eval_base.json")
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "runs")
